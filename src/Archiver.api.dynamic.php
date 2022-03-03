@@ -1,30 +1,40 @@
 <?php
-// Headers
+/*
+* @Author: Kevin Jan Barluado 
+* @Date: 2022-03-03 22:53:50 
+* @Github: https://github.com/kevinjanbarluado2 
+ */
 header('Access-Control-Allow-Origin: *');
 header("Content-type: application/json");
 header("Access-Control-Allow-Methods: post");
 
 require_once "./classes/Archiver.php";
-
 /*
 |-----------------------------------------------------------------------------------------------------------------
 | To call this API, here are the following keys:
 |
-| path:string (required) 
-| passwordLength: int (optional) 
+| path: string (required) 
 | add: array | string (required)
-| store: string (required)
+| savePath: string (required)
+| passwordLength: int (optional)(default:8) 
+| zipName: string (optional)(default:archived)
+| secured: boolean (optional)(default:true)
 |-----------------------------------------------------------------------------------------------------------------
 */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json = file_get_contents('php://input');
     $data = json_decode($json);
-
     $files = $data->add ?? array();
     $Archiver = new Archiver($data->path ?? null);
     $Archiver->passwordLength = $data->passwordLength ?? 8;
     $Archiver->add($files);
-    $Archiver->store($data->store);
+    $Archiver->secured = $data->secured ?? true;
+    if (empty($data->savePath)) {
+        echo json_encode(array("status" => "failed", "message" => "Undefined path to save file"));
+        http_response_code(404);
+        die();
+    }
+    $Archiver->store($data->savePath, isset($data->zipName) ? trim($data->zipName) : null);
 } else {
     echo json_encode(array("status" => "failed", "message" => "Invalid HTTP Request"));
     http_response_code(400);
