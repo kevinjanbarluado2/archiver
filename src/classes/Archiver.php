@@ -9,9 +9,15 @@ class Archiver
 
     public function __construct($path)
     {
+        if ($path == null) {
+            echo json_encode(array("status" => "failed", "message" => 'Undefined path'));
+            http_response_code(404);
+            die();
+        }
         $this->dir = str_replace('/', '\\', $path);
         if (!realpath($this->dir) and !is_dir(realpath($this->dir))) {
-            echo json_encode(array("status" => "failed", "message" => 'Invalid directory'));
+            echo json_encode(array("status" => "failed", "message" => 'Directory not found'));
+            http_response_code(404);
             die();
         }
         $this->_zip = new ZipArchive;
@@ -30,7 +36,7 @@ class Archiver
 
     public function store($location = null)
     {
-        
+
         try {
             if (count($this->_files) && $location) {
                 foreach ($this->_files as $index => $file) {
@@ -58,11 +64,14 @@ class Archiver
 
                 $this->_zip->close();
                 echo json_encode(array("status" => "success", "key" => $pass));
+                http_response_code(201);
             } else {
                 echo json_encode(array("status" => "failed"));
+                http_response_code(404);
             }
         } catch (Exception $e) {
             echo json_encode(array("status" => "failed", "message" => $e->getMessage()));
+            http_response_code(404);
         }
     }
 

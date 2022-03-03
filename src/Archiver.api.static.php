@@ -1,7 +1,8 @@
 <?php
 // Headers
 header('Access-Control-Allow-Origin: *');
-//header("Content-type: application/json");
+header("Content-type: application/json");
+header("Access-Control-Allow-Methods: post");
 
 require_once "./classes/Archiver.php";
 
@@ -13,7 +14,7 @@ $Archiver = new Archiver($path);
 //Uncomment to choose password length 
 //$Archiver->passwordLength = 3;
 
-$Archiver->add(array("sample.txt", "kevin.txt"));
-$Archiver->add("new.txt");
+$Archiver->add(array("sample1.txt", "sample2.txt"));
+$Archiver->add("sample3.txt");
 
 $Archiver->store('C:/xampp2/htdocs/Archiver/zipped.zip');
