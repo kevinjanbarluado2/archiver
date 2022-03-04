@@ -2,7 +2,7 @@
 
 version: 1.0.0
 
-## Technologies
+## Technology
 PHP 7.4.24
 
 ## Author
