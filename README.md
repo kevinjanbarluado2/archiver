@@ -3,7 +3,7 @@
 version: 1.0.0
 
 ## Technologies
-PHP
+PHP 7.4.24
 
 ## Author
 Kevin Jan Barluado
