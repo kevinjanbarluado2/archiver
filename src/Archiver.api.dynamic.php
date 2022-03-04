@@ -32,12 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $Archiver->add($files);
     $Archiver->secured = $data->secured ?? true;
     if (empty($data->savePath)) {
-        echo $status("failed", "Undefined path to save file");
+        echo $status("error", "Undefined path to save file");
         http_response_code(404);
         die();
     }
     $Archiver->store($data->savePath, isset($data->zipName) ? trim($data->zipName) : null);
 } else {
-    echo $status("failed", "Invalid HTTP Request");
+    echo $status("error", "Invalid HTTP Request");
     http_response_code(400);
 }
