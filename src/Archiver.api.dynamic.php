@@ -21,6 +21,8 @@ require_once "./classes/Archiver.php";
 | secured: boolean (optional)(default:true)
 |-----------------------------------------------------------------------------------------------------------------
 */
+$status = fn ($status, $message) => json_encode(array("status" => $status, "message" => $message));
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $json = file_get_contents('php://input');
     $data = json_decode($json);
@@ -30,12 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $Archiver->add($files);
     $Archiver->secured = $data->secured ?? true;
     if (empty($data->savePath)) {
-        echo json_encode(array("status" => "failed", "message" => "Undefined path to save file"));
+        echo $status("failed", "Undefined path to save file");
         http_response_code(404);
         die();
     }
     $Archiver->store($data->savePath, isset($data->zipName) ? trim($data->zipName) : null);
 } else {
-    echo json_encode(array("status" => "failed", "message" => "Invalid HTTP Request"));
+    echo $status("failed", "Invalid HTTP Request");
     http_response_code(400);
 }
