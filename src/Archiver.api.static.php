@@ -16,7 +16,17 @@ require_once "./classes/Archiver.php";
 $path = "C:/xampp2/htdocs/archiver/docs/";
 
 $Archiver = new Archiver($path);
-
+/*
+|-----------------------------------------------------------------------------------------------------------------
+| To use this API, here are the following keys:
+|
+| path: string (required) 
+| add: array | string (required)
+| savePath: string (required)
+| passwordLength: int (optional)(default:8) 
+| zipName: string (optional)(default:archived)
+| secured: boolean (optional)(default:true)
+|-----------------------------------------------------------------------------------------------------------------
 /*
 |-----------------------------------------------------------------------------------------------------------------
 |   Uncomment to select password length 
@@ -38,5 +48,6 @@ $Archiver->add(array("sample1.txt", "sample2.txt"));
 //User can add string as well
 $Archiver->add("sample3.txt");
 
-//Stored in the path and it's filename
-$Archiver->store('C:/xampp2/htdocs/Archiver/', 'zipFile.zip');
+//Stored in the path and it's filename 
+$date = date("Ymd");
+$Archiver->store('C:/xampp2/htdocs/Archiver/', "zipFile$date.zip");

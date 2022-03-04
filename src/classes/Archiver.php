@@ -78,7 +78,7 @@ class Archiver
                 }
 
                 $this->_zip->close();
-                echo json_encode(array("status" => "success", "key" => $pass, "link" => $savePath . $zipFile));
+                echo json_encode(array("status" => "success", "key" => $pass, "link" => [$savePath . $zipFile, $savePath, $zipFile]));
                 http_response_code(201);
             } else {
                 echo json_encode(array("status" => "failed"));
